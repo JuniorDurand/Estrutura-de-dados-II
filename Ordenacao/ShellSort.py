@@ -5,7 +5,7 @@ class ShellSort(object):
 		while h < end - start:
 			h = (3*h)+1
 
-		while h < 0:
+		while h > 0:
 			h = (h-1)//3
 
 			for i in range(h, end - start):
@@ -21,3 +21,4 @@ class ShellSort(object):
 				col[j] = temp
 
 		return col
+
