@@ -1,6 +1,6 @@
 class MergeSort(object):
 
-
+"""
 	def sort(self, col): 
 		if len(col) >1:
 			mid = len(col)//2 #Finding the mid of the colay 
@@ -33,6 +33,10 @@ class MergeSort(object):
 				col[k] = colR[j] 
 				j+=1
 				k+=1
+
+
+
+"""
 
 	def sort(self,  col, start = 0, end = None): 
 		if len(col) >1:

@@ -1,6 +1,9 @@
 class SelectionSort(object):
 
-	def sort( self, start, col, end):
+	def sort( self, col, start=0,  end=None):
+		if end == None:
+			end = len(col)
+			
 		for i in range(start,end):
 			min = i
 			for j in range(i+1, end):

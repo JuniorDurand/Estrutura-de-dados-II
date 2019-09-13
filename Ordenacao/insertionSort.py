@@ -1,6 +1,9 @@
 class InsertionSort(object):
 
-	def sort( self, start, col, end):
+	def sort( self, col, start=0,  end=None):
+		if end == None:
+			end = len(col)
+			
 		for j in range(start,end):
 			key = col[j]
 
