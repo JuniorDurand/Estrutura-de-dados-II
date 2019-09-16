@@ -34,3 +34,5 @@ class MergeSort(object):
 				j+=1
 				k+=1
 
+		return col
+

@@ -51,3 +51,4 @@ class MergeSortPartialInsert(object):
 				j+=1
 				k+=1
 
+		return col
