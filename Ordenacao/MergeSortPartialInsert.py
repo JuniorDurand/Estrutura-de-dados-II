@@ -17,15 +17,15 @@ class MergeSortPartialInsert(object):
 			colL = col[:mid] # Dividing the colay elements  
 			colR = col[mid:] # into 2 halves 
 
-			if len(colL) < self.L:
+			if len(colL) < self.L and len(colR) < self.L:
 				self.insert.sort(colL)
-			else:
-				self.sort(colL)
-
-			if len(colR) < self.L:
 				self.insert.sort(colR)
 			else:
+				self.sort(colL)
 				self.sort(colR) 
+
+			
+				
 
 			i = 0
 			j = 0
