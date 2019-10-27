@@ -1,0 +1,25 @@
+from hash import HashTable
+
+myHash = HashTable()
+
+myHash.insert(1, "Um")
+print(myHash)
+myHash.insert(2, "Dois")
+print(myHash)
+myHash.insert(3, "Três")
+print(myHash)
+data = myHash.remove(2)
+print(myHash)
+myHash.insert(4, "Quatro")
+print(myHash)
+data = myHash.remove(3)
+print(myHash)
+myHash.insert(5, "Cinco")
+print(myHash)
+data = myHash.remove(1)
+print(myHash)
+myHash.insert(0, "Zero")
+print(myHash)
+myHash.insert(1, "Um")
+print(myHash)
+
