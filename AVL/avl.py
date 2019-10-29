@@ -112,3 +112,26 @@ class  AvlTree(object):
 		if self.root != None:
 			self.__visitSimet(funVisit, self.root)
 
+
+	def __get(self, key, Node):
+
+		if not Node is None:
+			stat = self.cmpKey(Node.data, key)
+			if stat == 0:
+				return Node.data
+
+			elif stat < 0:
+				return self.__get(key, Node.left)
+
+			else:
+				return self.__get(key, Node.right)
+
+		#return None
+		raise NameError("Nonexistent data")
+
+
+
+	def get(self, key):
+		return self.__get(key, self.root)
+
+

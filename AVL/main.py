@@ -13,3 +13,7 @@ av.insert(8)
 
 
 av.visitSimet(printAvr)
+
+print(av.get(5))
+print(av.get(11))
+
