@@ -17,10 +17,7 @@ class MergeSortFinalInsert(object):
 			colL = col[:mid]
 			colR = col[mid:]
 
-			if len(colL) < self.L and len(colR) < self.L:
-				#self.insert.sort(colL)
-				#self.insert.sort(colR)
-			else:
+			if not (len(colL) < self.L and len(colR) < self.L):
 				self.sort(colL, chamada = chamada+1)
 				self.sort(colR, chamada = chamada+1)
 
