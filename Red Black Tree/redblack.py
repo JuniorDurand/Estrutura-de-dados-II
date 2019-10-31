@@ -1,4 +1,4 @@
-class Node(object):
+class TNode(object):
 
 	def __init__(self, data):
 		self.data = data
@@ -67,7 +67,7 @@ class RedBlack(object):
 
 
 		else:
-			NewNode = Node(data)
+			NewNode = TNode(data)
 			return NewNode, NewNode
 
 	def __tio(self, Node):
@@ -75,6 +75,55 @@ class RedBlack(object):
 			return Node.dad.dad.right
 		else:
 			return Node.dad.dad.left
+
+
+	def __leftRotation(self, Node):
+		dad = Node.dad
+		NodeAux = Node.right
+		Node.right = NodeAux.left
+		
+		if not NodeAux.left is None:
+			NodeAux.left.dad = Node 
+		
+		NodeAux.left = Node
+
+
+		if not dad is None:
+			if dad.right == Node:
+				dad.right = NodeAux
+
+			else:
+				dad.left = NodeAux
+
+		else:
+			self.root = NodeAux
+			NodeAux.dad = None
+
+		Node.dad = NodeAux
+
+
+	def __rightRotation(self, Node):
+		dad = Node.dad
+		NodeAux = Node.left
+		Node.left = NodeAux.right
+
+		if not NodeAux.right is None:
+			NodeAux.right.dad = Node 
+		
+		NodeAux.right = Node
+
+		if not dad is None:
+			if dad.right == Node:
+				dad.right = NodeAux
+
+			else:
+				dad.left = NodeAux
+
+		else:
+			self.root = NodeAux
+			NodeAux.dad = None
+
+		Node.dad = NodeAux
 
 
 
@@ -95,7 +144,7 @@ class RedBlack(object):
 			Node.dad.color = "black"
 			tio.color = "black"
 			avo = Node.dad.dad
-			__rb_insert_fixup(avo)
+			self.__rb_insert_fixup(avo)
 
 		#caso 4 e 5
 		else:
@@ -105,33 +154,60 @@ class RedBlack(object):
 			#caso 4
 			if Node == Node.dad.right and Node.dad == avo.left:
 				#rot esquerda Node.dad
-				#Node = Node.left
+				print("rotação esquerda")
+				self.__leftRotation(Node.dad)
+				Node = Node.left
 
 			#caso 4
 			elif  Node == Node.dad.left and Node.dad == avo.right:
 				#rot direita Node.dad
-				#Node = Node.right
+				print("rotação direita")
+				self.__rightRotation(Node.dad)
+				Node = Node.right
+
+			#caso 5
+			avo = Node.dad.dad
+			Node.dad.color = "black"
+			if not Node.dad.dad is None:
+				Node.dad.dad = "red"
+
+			if Node == Node.dad.left and Node.dad == avo.left:
+				print("rotação direita")
+				self.__rightRotation(avo)
 
 			else:
-
-
-
-		while Node.dad.color == "red":
-			if Node.getDad() == Node.getDad().getDad().left:
-				NodeAux = Node.getDad().getDad().right
-				if self.getColor(NodeAux) == "red":
-					Node.getDad().color = "black"
-					if not NodeAux is None:
-						NodeAux.color = "black"
-					Node = 
-			
-
-
+				print("rotação esquerda")
+				self.__leftRotation(avo)
 
 
 	def insert(self, data):
 		NewNode, self.root = self.__insert(data, self.root)
+		self.__rb_insert_fixup(NewNode)
 
+
+
+
+	def __visitSimet(self, funVisit, Node):
+
+		if Node != None:
+			self.__visitSimet(funVisit, Node.left)
+			funVisit(Node.data)
+			self.__visitSimet(funVisit, Node.right)
+
+	def visitSimet(self, funVisit):
+		if self.root != None:
+			self.__visitSimet(funVisit, self.root)
+
+	def __visitPre(self, funVisit, Node):
+
+		if Node != None:
+			funVisit(Node.data)
+			self.__visitPre(funVisit, Node.left)
+			self.__visitPre(funVisit, Node.right)
+
+	def visitPre(self, funVisit):
+		if self.root != None:
+			self.__visitPre(funVisit, self.root)
 
 
 
