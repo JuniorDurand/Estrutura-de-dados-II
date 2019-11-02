@@ -1,21 +1,23 @@
 class TNode(object):
 
-	def __init__(self, data):
+	def __init__(self, data=None, left=None, right=None, parent=None, color=True):
 		self.data = data
-		self.dad = None
-		self.left = None
-		self.right = None
-		self.color = "red" #red or black
+		self.left = left
+		self.right = right
+		self.parent = parent
+		self.color = color #true is red; false is black
 
+	def __str__(self):
+		return str(self.data) + str(self.color) + "\n"
 
-	def getColordad(self):
-		if not self.dad is None:
-			return self.dad.color
+	def getColorDad(self):
+		if not self.parent is None:
+			return self.parent.color
 		else:
-			return "black"
+			return False
 
 	def getDad(self):
-		return self.dad
+		return self.parent
 
 
 
@@ -24,7 +26,7 @@ class TNode(object):
 class RedBlack(object):
 
 	def __init__(self, funCMP=None, funCMPKey = None):
-		self.root = None
+		self.__root = None
 
 		if funCMP is None:
 			self.cmp = self.defautCMP
@@ -50,167 +52,162 @@ class RedBlack(object):
 		else:
 			return "black"
 
-	def __insert(self, data, Node):
-		if not Node is None:
-
-			stat = self.cmp(Node.data, data)
-
-
-			if stat < 0:
-				NewNode, Node.left = self.__insert(data, Node.left)
-				Node.left.dad = Node
-			else:
-				NewNode, Node.right = self.__insert(data, Node.right)
-				Node.right.dad = Node
-
-			return NewNode, Node
-
-
-		else:
-			NewNode = TNode(data)
-			return NewNode, NewNode
-
-	def __tio(self, Node):
-		if Node.dad.dad.left == Node.dad:
-			return Node.dad.dad.right
-		else:
-			return Node.dad.dad.left
-
-
-	def __leftRotation(self, Node):
-		dad = Node.dad
-		NodeAux = Node.right
-		Node.right = NodeAux.left
-		
-		if not NodeAux.left is None:
-			NodeAux.left.dad = Node 
-		
-		NodeAux.left = Node
-
-
-		if not dad is None:
-			if dad.right == Node:
-				dad.right = NodeAux
-
-			else:
-				dad.left = NodeAux
-
-		else:
-			self.root = NodeAux
-			NodeAux.dad = None
-
-		Node.dad = NodeAux
-
-
-	def __rightRotation(self, Node):
-		dad = Node.dad
-		NodeAux = Node.left
-		Node.left = NodeAux.right
-
-		if not NodeAux.right is None:
-			NodeAux.right.dad = Node 
-		
-		NodeAux.right = Node
-
-		if not dad is None:
-			if dad.right == Node:
-				dad.right = NodeAux
-
-			else:
-				dad.left = NodeAux
-
-		else:
-			self.root = NodeAux
-			NodeAux.dad = None
-
-		Node.dad = NodeAux
-
-
-
-
-	def __rb_insert_fixup(self, Node):
-		
-		#case 1
-		if Node.dad is None:
-			Node.color = "black"
-
-		#caso 2
-		elif Node.dad.color == "black":
+	def __simmetric(self, node):
+		if node is None:
 			return
+		self.__simmetric(node.left)
+		print(node)
+		self.__simmetric(node.right)
+		
+	def simmetric(self):
+		self.__simmetric(self.__root)
 
-		#caso 3
-		elif self.__tio(Node) != None and self.__tio(Node).color == "red":
-			tio = self.__tio(Node)
-			Node.dad.color = "black"
-			tio.color = "black"
-			avo = Node.dad.dad
-			self.__rb_insert_fixup(avo)
+	def __invertedIndex(self, node):
+		if node is None:
+			return
+		self.__invertedIndex(node.left)
+		print(node.data)
+		self.__invertedIndex(node.right)
 
-		#caso 4 e 5
+	def invertedIndex(self):
+		if self.__root is None:
+			print("Arvore Vazia")
+			return None
+		self.__invertedIndex(self.__root)
+		
+	def BSTInsert(self, data, comp):
+		if self.__root is None:
+			self.__root = TNode(data, color=False)
+			return self.__root
 		else:
-			tio = self.__tio(Node)
-			avo = Node.dad.dad
-
-			#caso 4
-			if Node == Node.dad.right and Node.dad == avo.left:
-				#rot esquerda Node.dad
-				print("rotação esquerda")
-				self.__leftRotation(Node.dad)
-				Node = Node.left
-
-			#caso 4
-			elif  Node == Node.dad.left and Node.dad == avo.right:
-				#rot direita Node.dad
-				print("rotação direita")
-				self.__rightRotation(Node.dad)
-				Node = Node.right
-
-			#caso 5
-			avo = Node.dad.dad
-			Node.dad.color = "black"
-			if not Node.dad.dad is None:
-				Node.dad.dad = "red"
-
-			if Node == Node.dad.left and Node.dad == avo.left:
-				print("rotação direita")
-				self.__rightRotation(avo)
-
+			aux = self.__root
+			while aux is not None:
+				aux2 = aux
+				if comp(aux.data , data) != -1:
+					aux = aux.left
+				else:
+					aux = aux.right
+					
+			if comp(aux2.data , data) != -1:
+				aux2.left = TNode(data, parent=aux2)
+				return aux2.left
 			else:
-				print("rotação esquerda")
-				self.__leftRotation(avo)
+				aux2.right = TNode(data, parent=aux2)
+				return aux2.right
+	
+	def fixInsertion(self, node):
+		parent_nd = None
+		grand_parent_nd = None
 
+		while (node != self.__root) and (node.color is not False) and (node.parent.color is True):
+			parent_nd = node.parent
+			grand_parent_nd = parent_nd.parent
 
-	def insert(self, data):
-		NewNode, self.root = self.__insert(data, self.root)
-		self.__rb_insert_fixup(NewNode)
+			if node.parent == grand_parent_nd.left:
+				uncle_nd = grand_parent_nd.right
 
+				if uncle_nd is not None and uncle_nd.color is True:
+					grand_parent_nd.color = True
+					parent_nd.color = False
+					uncle_nd.color = False
+					node = grand_parent_nd
+				else:
+					if node == parent_nd.right:
+						self.rotateLeft(parent_nd)
+						node = parent_nd
+						parent_nd = node.parent
 
+					self.rotateRight(grand_parent_nd)
+					aux = parent_nd.color
+					parent_nd.color = grand_parent_nd.color
+					grand_parent_nd.color = aux
+					node = parent_nd
+			else:
+				uncle_nd = grand_parent_nd.left
 
+				if uncle_nd is not None and uncle_nd.color is True:
+					grand_parent_nd.color = True
+					parent_nd.color = False
+					uncle_nd.color = False
+					node = grand_parent_nd
+				else:
+					if node == parent_nd.left:
+						self.rotateRight(parent_nd)
+						node = parent_nd
+						parent_nd = node.parent
 
-	def __visitSimet(self, funVisit, Node):
+					self.rotateLeft(grand_parent_nd)
+					aux = parent_nd.color
+					parent_nd.color = grand_parent_nd.color
+					grand_parent_nd.color = aux
+					node = parent_nd
 
-		if Node != None:
-			self.__visitSimet(funVisit, Node.left)
-			funVisit(Node.data)
-			self.__visitSimet(funVisit, Node.right)
-
-	def visitSimet(self, funVisit):
-		if self.root != None:
-			self.__visitSimet(funVisit, self.root)
-
-	def __visitPre(self, funVisit, Node):
-
-		if Node != None:
-			funVisit(Node.data)
-			self.__visitPre(funVisit, Node.left)
-			self.__visitPre(funVisit, Node.right)
-
-	def visitPre(self, funVisit):
-		if self.root != None:
-			self.__visitPre(funVisit, self.root)
-
-
-
+		self.__root.color = False
 		
+	def rotateLeft(self, node):
+		nd_right = node.right
+		node.right = nd_right.left
 
+		if node.right is not None:
+			node.right.parent = node
+
+		nd_right.parent = node.parent
+
+		if node.parent is None:
+			self.__root = nd_right
+		elif node == node.parent.left:
+			node.parent.left = nd_right
+		else:
+			node.parent.right = nd_right
+
+		nd_right.left = node
+		node.parent = nd_right
+
+	def rotateRight(self, node):
+		nd_left = node.left
+		node.left = nd_left.right
+
+		if node.left is not None:
+			node.left.parent = node
+
+		nd_left.parent = node.parent
+
+		if node.parent is None:
+			self.__root = nd_left
+		elif node == node.parent.left:
+			node.parent.left = nd_left
+		else:
+			node.parent.right = nd_left
+
+		nd_left.right = node
+		node.parent = nd_left
+
+	def insert(self, data, comp):
+		newnode = self.BSTInsert(data, comp)
+
+		self.fixInsertion(newnode)
+
+	def __height(self, node):
+		if node is None:
+			return -1
+		hl = 0
+		hr = 0
+		hl = self.__height(node.left)
+		hr = self.__height(node.right)
+		if hl > hr:
+			return 1 + hl
+		else:
+			return 1 + hr
 		
+	def height(self):
+		return self.__height(self.__root)
+		
+	def search(self, key, comp):
+		aux = self.__root
+		while aux is not None:
+			if comp(aux.data.getVal(), key) == 0:
+				return aux.data
+			if comp(aux.data.getVal(), key) == 1:
+				aux = aux.left
+			else:
+				aux = aux.right
