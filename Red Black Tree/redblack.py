@@ -8,7 +8,7 @@ class TNode(object):
 		self.color = color #true is red; false is black
 
 	def __str__(self):
-		return str(self.data) + str(self.color) + "\n"
+		return str(self.data) +" "+ str(self.color) 
 
 	def getColorDad(self):
 		if not self.parent is None:
@@ -50,14 +50,14 @@ class RedBlack(object):
 		if not Node is None:
 			return Node.color
 		else:
-			return "black"
+			return False
 
 	def __simmetric(self, node):
 		if node is None:
 			return
-		self.__simmetric(node.left)
-		print(node)
 		self.__simmetric(node.right)
+		print(node)
+		self.__simmetric(node.left)
 		
 	def simmetric(self):
 		self.__simmetric(self.__root)
@@ -75,7 +75,7 @@ class RedBlack(object):
 			return None
 		self.__invertedIndex(self.__root)
 		
-	def BSTInsert(self, data, comp):
+	def BSTInsert(self, data):
 		if self.__root is None:
 			self.__root = TNode(data, color=False)
 			return self.__root
@@ -83,12 +83,12 @@ class RedBlack(object):
 			aux = self.__root
 			while aux is not None:
 				aux2 = aux
-				if comp(aux.data , data) != -1:
+				if self.cmp(aux.data , data) != -1:
 					aux = aux.left
 				else:
 					aux = aux.right
 					
-			if comp(aux2.data , data) != -1:
+			if self.cmp(aux2.data , data) != -1:
 				aux2.left = TNode(data, parent=aux2)
 				return aux2.left
 			else:
@@ -182,8 +182,8 @@ class RedBlack(object):
 		nd_left.right = node
 		node.parent = nd_left
 
-	def insert(self, data, comp):
-		newnode = self.BSTInsert(data, comp)
+	def insert(self, data):
+		newnode = self.BSTInsert(data)
 
 		self.fixInsertion(newnode)
 
@@ -202,12 +202,14 @@ class RedBlack(object):
 	def height(self):
 		return self.__height(self.__root)
 		
-	def search(self, key, comp):
+	def search(self, key):
 		aux = self.__root
 		while aux is not None:
-			if comp(aux.data.getVal(), key) == 0:
+			if self.cmpKey(aux.data, key) == 0:
 				return aux.data
-			if comp(aux.data.getVal(), key) == 1:
+			if self.cmpKey(aux.data, key) == 1:
 				aux = aux.left
 			else:
 				aux = aux.right
+
+		return None
