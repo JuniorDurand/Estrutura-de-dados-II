@@ -4,7 +4,7 @@ class TNode(object):
 		self.data = data
 		self.left = None
 		self.right = None
-		self.h = 1
+		self.h = 0
 
 class  AvlTree(object):
 
@@ -68,7 +68,7 @@ class  AvlTree(object):
 
 	def __getH(self, Node):
 		if Node is None:
-			return 0
+			return -1
 		else:
 			return Node.h
 		
