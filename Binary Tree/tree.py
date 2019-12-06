@@ -13,12 +13,17 @@ class TNode(object):
 
 class BTree(object):
 	"""docstring for BTree"""
-	def __init__(self, CMPFunc = None):
+	def __init__(self, CMPFunc = None, CMPKey = None):
 		self.root = None
 		if CMPFunc == None:
 			self.cmp = self.defautCMP
 		else:
 			self.cmp = CMPFunc
+
+		if CMPKey == None:
+			self.cmpKey = self.defautCMP
+		else:
+			self.cmpKey = CMPKey
 
 	def defautCMP(self, a, b):
 		if (a > b):
@@ -112,6 +117,21 @@ class BTree(object):
 	def visitSimet(self, funVisit):
 		if self.root != None:
 			self.__visitSimet(funVisit, self.root)
+
+
+	def __get(self, key, Node):
+		if not Node is None:
+			stat = self.cmpKey(Node.data, data)
+			if stat < 0:
+				return self.__insert(data, Node.left)
+			elif stat > 0:
+				return = self.__insert(data, Node.right)
+			else:
+				return Node.data
+
+
+	def get(self, key):
+		return self.__get(key, self.root)
 
 
 

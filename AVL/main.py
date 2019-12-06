@@ -4,16 +4,16 @@ def printAvr(data):
 	print(data)
 
 av = AvlTree()
-
-av.insert(5)
-av.insert(1)
+av.insert(2)
 av.insert(10)
-av.insert(7)
-av.insert(8)
+av.insert(2058)
+av.insert(14)
+av.insert(8206)
 
-
+av.insert(8199)
+print("=======")
 av.visitSimet(printAvr)
+print("=======")
+av.visitPre(printAvr)
 
-print(av.get(5))
-print(av.get(11))
 

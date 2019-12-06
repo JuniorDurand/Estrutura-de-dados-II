@@ -4,7 +4,8 @@ class TNode(object):
 		self.data = data
 		self.left = None
 		self.right = None
-		self.h = 1
+		self.h = 0
+
 
 class  AvlTree(object):
 
@@ -34,6 +35,7 @@ class  AvlTree(object):
 		if Node == None:
 			return TNode(data)
 		else:
+			#print("insert", Node.data)
 			stat = self.cmp(Node.data, data)
 
 			if stat < 0:
@@ -46,10 +48,10 @@ class  AvlTree(object):
 			bal = self.__getBalance(Node)
 
 			if bal > 1 and self.cmp(Node.left.data, data ) < 0:
-				return self.__leftRotation(Node)
+				return self.__rightRotation(Node)
 
 			elif bal < -1 and self.cmp(Node.right.data, data) > 0:
-				return self.__rightRotation(Node)
+				return self.__leftRotation(Node)
 
 			elif bal > 1 and self.cmp(Node.left.data, data) > 0:
 				Node.left = self.__leftRotation(Node.left)
@@ -63,14 +65,15 @@ class  AvlTree(object):
 				return Node
 
 
+
 	def insert(self, data):
 		self.root = self.__insert(data, self.root)
 
 	def __getH(self, Node):
 		if Node is None:
-			return 0
+			return -1
 		else:
-			return Node.h
+			return max(self.__getH(Node.right), self.__getH(Node.left)) + 1
 		
 	def __getBalance(self, Node):
 		if Node is None:
@@ -79,12 +82,17 @@ class  AvlTree(object):
 			return self.__getH(Node.left) - self.__getH(Node.right)
 
 	def __leftRotation(self, Node):
+		bal = self.__getBalance(Node)
+		#print("Node", Node.data, bal  )
+		#print("NodeRight", Node.right.data  )
+		#print("NodeLeft", Node.left.data  )
 		NodeAux = Node.right
+
 		Node.right = NodeAux.left
 		NodeAux.left = Node
 
 		Node.h = 1 + max(self.__getH(Node.left), self.__getH(Node.right))
-		NodeAux.h = 1 + max(self.__getH(NodeAux.left), self.__getH(NodeAux.right))
+		NodeAux.h = 1 + max(self.__getH(NodeAux.right), self.__getH(Node))
 
 
 		return NodeAux
@@ -95,7 +103,7 @@ class  AvlTree(object):
 		NodeAux.right = Node
 
 		Node.h = 1 + max(self.__getH(Node.left), self.__getH(Node.right))
-		NodeAux.h = 1 + max(self.__getH(NodeAux.left), self.__getH(NodeAux.right))
+		NodeAux.h = 1 + max(self.__getH(NodeAux.left), self.__getH(Node))
 
 		return NodeAux
 
@@ -105,12 +113,27 @@ class  AvlTree(object):
 
 		if Node != None:
 			self.__visitSimet(funVisit, Node.left)
-			funVisit(Node.data)
+			#funVisit(Node.data)
+			print(Node.data, self.__getH(Node))
 			self.__visitSimet(funVisit, Node.right)
 
 	def visitSimet(self, funVisit):
 		if self.root != None:
 			self.__visitSimet(funVisit, self.root)
+
+
+	def __visitPre(self, funVisit, Node):
+
+		if Node != None:
+			print(Node.data, self.__getH(Node))
+			self.__visitPre(funVisit, Node.left)
+			#funVisit(Node.data)
+			self.__visitPre(funVisit, Node.right)
+
+	def visitPre(self, funVisit):
+		if self.root != None:
+			self.__visitPre(funVisit, self.root)
+
 
 
 	def __get(self, key, Node):

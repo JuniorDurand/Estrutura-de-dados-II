@@ -31,12 +31,51 @@ class List(object):
 			yield cur.data
 			cur = cur.next
 
+	def __defaultCMP(self,data, key):
+		if data == key:
+			return True
+		else:
+			return False
+
 	def append(self, data):
 		newNode = Node(data)
 		newNode.next = self.first
 		self.first = newNode
 		self.len +=1
 
+	def get(self, key, cmp=None):
+		if cmp == None:
+			cmp = self.__defaultCMP
 
+		cur  = self.first
+		while not cur is None:
+			if cmp(cur.data, key):
+				return cur.data
+			else:
+				cur = cur.next
+		return None
 
+	def remove(self, key, cmp=None):
+		if cmp == None:
+			cmp = self.__defaultCMP
+
+		prev = None
+		cur  = self.first
+		while not cur is None:
+			if cmp(cur.data, key):
+				break
+			else:
+				prev = cur
+				cur = cur.next
 		
+		if not cur is None:
+			if not prev is None:
+				prev.next = cur.next
+			else:
+				self.first = cur.next
+
+			return cur.data
+
+		return None
+
+
