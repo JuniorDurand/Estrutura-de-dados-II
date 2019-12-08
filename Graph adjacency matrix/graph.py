@@ -1,23 +1,32 @@
 class Graph(object):
 	def __init__(self, size, oriented = "not_oriented"):
 		self.oriented = oriented
-		self.adjMatrix = []
+		#self.adjMatrix = []
+		self.adjMatrix = [[0 for x in range(size)] for y in range(size)] 
 		for i in range(size):
-			self.adjMatrix.append([None for i range(size)])
+			#self.adjMatrix[i] = []
+			for j in range(size):
+				self.adjMatrix[i][j] = None
 		self.size = size
 
 		#define predecessor
 		self.pi = []
-		self.pi.append([None for i range(size)])
+		for i in range(size):
+			self.pi.append(None)
+
 		
 		self.alfa = []
-		self.alfa.append([None for i range(size)])
+		for i in range(size):
+			self.alfa.append(None)
 
 		self.dist = []
-		self.dist.append([None for i range(size)])
+		for i in range(size):
+			self.dist.append(None)
+		
 
 		self.cor = []
-		self.cor.append(["branco" for i range(size)])
+		for i in range(size):
+			self.dist.append("branco")
 
 
 
@@ -29,7 +38,7 @@ class Graph(object):
 			else:
 				self.adjMatrix[u][v] = weight
 				self.adjMatrix[v][u] = weight
-		else
+		else:
 			if weight == None:
 				self.adjMatrix[u][v] = 1
 			else:
@@ -38,17 +47,11 @@ class Graph(object):
 	
 	def removeEDGE(self, u, v):
 		if self.oriented == "not_oriented":
-			if weight == None:
-				self.adjMatrix[u][v] = None
-				self.adjMatrix[v][u] = None
-			else:
-				self.adjMatrix[u][v] = None
-				self.adjMatrix[v][u] = None
-		else
-			if weight == None:
-				self.adjMatrix[u][v] = None
-			else:
-				self.adjMatrix[u][v] = None
+			self.adjMatrix[u][v] = None
+			self.adjMatrix[v][u] = None
+
+		else:
+			self.adjMatrix[u][v] = None
 
 	
 	def containsEDGE(self, u, v):
@@ -59,8 +62,17 @@ class Graph(object):
 		return self.size
 
 
-	def toString(self):
-		for row in self.adjMatrix:
-			for val in row:
-				print('{:3}'.format(val)),
-			print
+	def __str__(self):
+		string = "[\n"
+		for row in  range(len(self.adjMatrix)) :
+			string += "%d :\n" % (row)
+			for val in range(len(self.adjMatrix[row])):
+				if not self.adjMatrix[row][val] is None: 
+					string += "\t %d, %.5f\n" % (val, self.adjMatrix[row][val]) 
+
+		string += "]"
+		return string
+		
+
+
+
