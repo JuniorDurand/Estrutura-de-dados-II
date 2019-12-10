@@ -1,5 +1,5 @@
 class Vertex(object):
-	def __init__(self, num = 0):
+	def __init__(self, num):
 		self.num = num
 		self.listAdj = []
 		self.listWeight = []
@@ -24,6 +24,13 @@ class Vertex(object):
 		else:
 			return False
 
+	def getEDGEs(self):
+		EDGEs = []
+		for x in self.listAdj:
+			EDGEs.append(x)
+
+		return EDGEs
+
 	def updateEDGE(self, edge, weight=1):
 		index = self.listAdj.index(edge)
 		if not index is None:
@@ -36,6 +43,12 @@ class Vertex(object):
 			string += "\t %d, %.5f\n" % (self.listAdj[x].num, self.listWeight[x]) 
 		return string
 
+	def __repr__(self):
+		string = ""
+		string += "%d :\n" % (self.num)
+		for x in range(len(self.listAdj)):
+			string += "\t %d, %.5f\n" % (self.listAdj[x].num, self.listWeight[x]) 
+		return string
 		
 
 class Graph(object):
@@ -101,3 +114,27 @@ class Graph(object):
 
 		string += "]"
 		return string
+
+
+	def BFS(self, u = None):
+		if u is None:
+			u = self.vertex[0]
+		else:
+			u = self.vertex[u]
+
+
+		queue = []
+		#dist, Vertex
+		queue.append([0,u])
+		while len(queue) > 0:
+			print(queue)
+			count, u = queue.pop()
+			EDGEs = u.getEDGEs()
+			for EDGE in EDGEs:
+				if EDGE.cor == "branco":
+					queue.append([count+1,EDGE])
+					EDGE.cor == "cinza"
+					EDGE.pi = u
+				u.cor = "preto"
+
+
