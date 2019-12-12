@@ -74,6 +74,7 @@ class Vertex(object):
 		
 
 class Graph(object):
+	
 	def __init__(self, size, oriented = "not_oriented"):
 		self.oriented = oriented
 		self.vertex = []
@@ -142,11 +143,26 @@ class Graph(object):
 
 
 	def BFS(self, u = None):
+		self.resetGraph()
 		if u is None:
 			u = self.vertex[0]
 		else:
 			u = self.vertex[u]
 
+		queue = []
+		#dist, Vertex.
+		queue.append([0,u])
+		while len(queue) > 0:
+			#print(queue)
+			count, u = queue.pop()
+			EDGEs = u.getEDGEs()
+			for EDGE in EDGEs:
+				if EDGE.cor == "branco":
+					queue.append([count+1,EDGE])
+					EDGE.cor = "cinza"
+					EDGE.dist = count+1
+					EDGE.pi = u
+			u.cor = "preto"
 
 		queue = []
 		#dist, Vertex
