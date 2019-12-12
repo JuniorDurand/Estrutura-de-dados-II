@@ -164,18 +164,35 @@ class Graph(object):
 					EDGE.pi = u
 			u.cor = "preto"
 
+
+
+	def eccentricity(self, u = None):
+		self.resetGraph()
+		if u is None:
+			u = self.vertex[0]
+		else:
+			u = self.vertex[u]
+
+		max = [0, None]
+
 		queue = []
-		#dist, Vertex
+		#dist, Vertex.
 		queue.append([0,u])
 		while len(queue) > 0:
-			print(queue)
+			#print(queue)
 			count, u = queue.pop()
 			EDGEs = u.getEDGEs()
 			for EDGE in EDGEs:
 				if EDGE.cor == "branco":
 					queue.append([count+1,EDGE])
-					EDGE.cor == "cinza"
+					EDGE.cor = "cinza"
+					EDGE.dist = count+1
 					EDGE.pi = u
-				u.cor = "preto"
+
+					# para excentricidade
+					if max <= count+1:
+						max = [count+1, EDGE]
+			u.cor = "preto"
+		return max[0]
 
 
