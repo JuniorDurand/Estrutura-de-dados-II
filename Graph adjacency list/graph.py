@@ -213,3 +213,17 @@ class Graph(object):
 				x = minEcc
 		return minEcc
 
+
+	def BFS_orig_dest(self, u, v):
+		self.BFS(u)
+		vertDest = self.vertex[v]
+		return vertDest.dist
+		"""string = ""
+		while not vertDest is None:
+			string += ("->" + str(vertDest.num)) 
+			vertDest = vertDest.pi
+
+		print(string)"""
+
+
+
