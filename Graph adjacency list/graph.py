@@ -82,6 +82,9 @@ class Graph(object):
 		self.size = size
 
 
+	def resetGraph(self):
+		for x in self.vertex:
+			x.resetVertex()
 
 
 	def addEDGE(self, u, v, weight = None):
