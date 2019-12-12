@@ -8,9 +8,18 @@ class Vertex(object):
 		self.dist = None
 		self.cor = "branco"
 
+
+	def resetVertex(self):
+		self.pi = None
+		self.alfa = None
+		self.dist = None
+		self.cor = "branco"
+
+
 	def addEDGE(self, edge, weight=1):
 		self.listAdj.append(edge)
 		self.listWeight.append(weight)
+
 
 	def removeEDGE(self, edge):
 		index = self.listAdj.index(edge)
@@ -18,11 +27,13 @@ class Vertex(object):
 			self.listAdj.pop(index)
 			self.listWeight.pop(index)
 
+
 	def containsEDGE(self, edge):
 		if edge in self.listAdj:
 			return True
 		else:
 			return False
+
 
 	def getEDGEs(self):
 		EDGEs = []
