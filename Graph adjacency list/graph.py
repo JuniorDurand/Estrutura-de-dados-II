@@ -46,13 +46,24 @@ class Vertex(object):
 		index = self.listAdj.index(edge)
 		if not index is None:
 			self.listWeight[index] = weight
+	
+
+	def order(self, vertex):
+		return vertex.num
+
+
+	def ordenedVertex(self):
+		self.listAdj.sort(key = self.order, reverse=True)
+
 
 	def __str__(self):
+		self.ordenedVertex()
 		string = ""
 		string += "%d :\n" % (self.num)
 		for x in range(len(self.listAdj)):
 			string += "\t %d, %.5f\n" % (self.listAdj[x].num, self.listWeight[x]) 
 		return string
+
 
 	def __repr__(self):
 		string = ""
