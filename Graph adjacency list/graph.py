@@ -204,3 +204,12 @@ class Graph(object):
 				x = maxEcc
 		return maxEcc
 
+
+	def Radius(self):
+		minEcc = self.eccentricity(u = self.listAdj[0])
+		for EDGE in self.listAdj[1:]:
+			x = self.eccentricity(u = EDGE)
+			if x < minEcc:
+				x = minEcc
+		return minEcc
+
