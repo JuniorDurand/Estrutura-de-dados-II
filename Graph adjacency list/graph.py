@@ -196,3 +196,11 @@ class Graph(object):
 		return max[0]
 
 
+	def Diameter(self):
+		maxEcc = self.eccentricity(u = self.listAdj[0])
+		for EDGE in self.listAdj[1:]:
+			x = self.eccentricity(u = EDGE)
+			if x > maxEcc:
+				x = maxEcc
+		return maxEcc
+
