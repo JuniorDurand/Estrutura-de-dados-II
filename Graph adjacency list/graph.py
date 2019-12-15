@@ -110,7 +110,7 @@ class Vertex(object):
 
 
 	def __str__(self):
-		self.ordenedVertex()
+		#self.ordenedVertex()
 		string = ""
 		string += "%d :\n" % (self.num)
 		for x in range(len(self.listAdj)):
