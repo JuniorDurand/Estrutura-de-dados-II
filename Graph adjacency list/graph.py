@@ -87,6 +87,14 @@ class Vertex(object):
 
 		return EDGEs
 
+	def getEDGEsObj(self):
+		EDGEs = []
+		for x in range(len(self.listAdj)):
+			Edge = EDGE(self.listWeight[x], self, self.listAdj[x])
+			EDGEs.append(Edge)
+
+		return EDGEs
+
 	def updateEDGE(self, edge, weight=1):
 		index = self.listAdj.index(edge)
 		if not index is None:
