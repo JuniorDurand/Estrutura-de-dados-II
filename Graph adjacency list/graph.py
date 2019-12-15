@@ -69,6 +69,12 @@ class Vertex(object):
 	def __gt__( a, b):
 		return a.dist > b.dist
 
+	def __eq__( a, b):
+		return a.num == b.num
+
+	def __ne__( a, b):
+		return a.num != b.num
+
 
 	def resetVertex(self):
 		self.pi = None
@@ -394,10 +400,10 @@ class Graph(object):
 		else:
 			return False
 
-	def SecurityVertexDijkstra(self, listEDGEs):
+	def SecurityVertexsDijkstra(self, listEDGEs):
 		lista = []
 		for EDGE in listEDGEs:
-			if self.SecurityEdgeDijkstra(EDGE):
+			if self.SecurityVertexDijkstra(EDGE):
 				lista.append(EDGE)
 		return lista
 
@@ -416,7 +422,7 @@ class Graph(object):
 	def Dijkstra(self, u):
 		self.resetGraph()
 		
-		for x in self.Vertex:
+		for x in self.vertex:
 			x.dist = sys.maxsize
 
 		u = self.vertex[u]
@@ -424,12 +430,17 @@ class Graph(object):
 
 		EDGEs = []
 		EDGEs.append(u)
+		
 		while len(EDGEs) > 0:
-			EDGEs.extend(self.getEDGEs(u))
+			EDGEs.sort()
+			u = EDGEs.pop(0)
+			EDGEs.extend(u.getEDGEs())
 			u.cor = "preto"
 			self.Relax(u)
-			self.SecurityVertexDijkstra(EDGEs)
-			EDGEs.sort()
+			EDGEs = self.SecurityVertexsDijkstra(EDGEs)
+			EDGEs = self.RemoveDuplicate(EDGEs)
+
+
 
 
 
