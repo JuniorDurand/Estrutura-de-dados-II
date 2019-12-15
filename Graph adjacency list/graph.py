@@ -1,4 +1,5 @@
 import heapq
+import sys
 
 class EDGE(object):
 	"""docstring for EDGE"""
@@ -14,11 +15,6 @@ class EDGE(object):
 	def __repr__(self):
 		return "[%d , %d -> %d]" % (self.weight, self.u.num, self.v.num)        
 
-	def __lt__( a, b):
-		return  a.weight < b.weight
-
-	def __le__( a, b):
-		return  a.weight <= b.weight
 
 	def __eq__( a, b):
 		if (a.u == b.v or a.v == b.u) or (a.u == b.u and a.v == b.v):
@@ -32,6 +28,12 @@ class EDGE(object):
 		else:
 			return True
 
+	def __lt__( a, b):
+		return  a.weight < b.weight
+
+	def __le__( a, b):
+		return  a.weight <= b.weight
+	
 	def __ge__( a, b):
 		return a.weight >= b.weight
 
@@ -52,6 +54,20 @@ class Vertex(object):
 		self.alfa = None
 		self.dist = None
 		self.cor = "branco"
+
+
+	#definindo operadores para algoritmo de Dijkstra
+	def __lt__( a, b):
+		return  a.dist < b.dist
+
+	def __le__( a, b):
+		return  a.dist <= b.dist
+	
+	def __ge__( a, b):
+		return a.dist >= b.dist
+
+	def __gt__( a, b):
+		return a.dist > b.dist
 
 
 	def resetVertex(self):
@@ -86,6 +102,8 @@ class Vertex(object):
 			EDGEs.append(x)
 
 		return EDGEs
+
+
 
 	def getEDGEsObj(self):
 		EDGEs = []
@@ -367,6 +385,52 @@ class Graph(object):
 			if self.SecurityEDGEKruskal(Edge.u, Edge.v):
 				self.MergeComponents(components, Edge.u, Edge.v)
 				self.MTS.addEDGE(Edge.u.num, Edge.v.num, weight= Edge.weight)
+
+	
+
+	def SecurityVertexDijkstra(self, EDGE):
+		if EDGE.cor != "preto":
+			return True
+		else:
+			return False
+
+	def SecurityVertexDijkstra(self, listEDGEs):
+		lista = []
+		for EDGE in listEDGEs:
+			if self.SecurityEdgeDijkstra(EDGE):
+				lista.append(EDGE)
+		return lista
+
+
+	def Relax(self, u):
+		count = 0
+		for EDGE in u.listAdj:
+			if EDGE.dist > u.dist + u.listWeight[count]:
+				EDGE.dist = u.dist + u.listWeight[count]
+				EDGE.pi = u
+			count += 1
+
+
+
+
+	def Dijkstra(self, u):
+		self.resetGraph()
+		
+		for x in self.Vertex:
+			x.dist = sys.maxsize
+
+		u = self.vertex[u]
+		u.dist = 0
+
+		EDGEs = []
+		EDGEs.append(u)
+		while len(EDGEs) > 0:
+			EDGEs.extend(self.getEDGEs(u))
+			u.cor = "preto"
+			self.Relax(u)
+			self.SecurityVertexDijkstra(EDGEs)
+			EDGEs.sort()
+
 
 
 
