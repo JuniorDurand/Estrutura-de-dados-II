@@ -323,4 +323,50 @@ class Graph(object):
 
 			EDGEs = self.SecurityEDGEsPrim(EDGEs)
 
+	def RemoveDuplicate(self, lista):
+		final_list = []
+		for num in lista:
+			if num not in final_list:
+				final_list.append(num)
+		return final_list 
+
+	def SecurityEDGEKruskal(self, u, v):
+		if u.alfa != v.alfa:
+			return True
+		else:
+			return False
+
+	def MergeComponents(self, components, u, v):
+		u = u.alfa
+		v = v.alfa
+		while len(components[v]) > 0:
+			component = components[v].pop()
+			component.alfa = u
+			components[u].append(component)
+
+
+	def Kruskal(self):
+		self.resetGraph()
+		self.MTS = Graph(self.size)
+		components = []
+		for x in range(self.size):
+			components.insert(x, [])
+			#components[x] = []
+			components[x].append(self.vertex[x])
+			self.vertex[x].alfa = x
+
+		EDGEs = []
+		for vertex in self.vertex:
+			EDGEs.extend(vertex.getEDGEsObj())
+		self.RemoveDuplicate(EDGEs)
+
+		EDGEs.sort()
+
+		while len(EDGEs) > 0:
+			Edge = EDGEs.pop(0)
+			if self.SecurityEDGEKruskal(Edge.u, Edge.v):
+				self.MergeComponents(components, Edge.u, Edge.v)
+				self.MTS.addEDGE(Edge.u.num, Edge.v.num, weight= Edge.weight)
+
+
 
