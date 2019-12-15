@@ -12,9 +12,14 @@ myGraph.addEDGE(1,5,weight= 4)
 
 print(myGraph)
 
-
+"""
 myGraph.Prim(u=1)
 
 print(myGraph.MTS)
 myGraph.Kruskal()
 print(myGraph.MTS)
+"""
+
+myGraph.Dijkstra(1)
+
+print(myGraph.vertex[4].dist)
