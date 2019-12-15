@@ -1,3 +1,48 @@
+import heapq
+
+class EDGE(object):
+	"""docstring for EDGE"""
+	def __init__(self, weight, u, v):
+		self.weight = weight
+		self.u = u
+		self.v = v
+
+	def __str__(self):
+		return "[%d , %d -> %d]" % (self.weight, self.u.num, self.v.num)
+
+
+	def __repr__(self):
+		return "[%d , %d -> %d]" % (self.weight, self.u.num, self.v.num)        
+
+	def __lt__( a, b):
+		return  a.weight < b.weight
+
+	def __le__( a, b):
+		return  a.weight <= b.weight
+
+	def __eq__( a, b):
+		if (a.u == b.v or a.v == b.u) or (a.u == b.u and a.v == b.v):
+			return True
+		else:
+			return False
+
+	def __ne__( a, b):
+		if (a.u == b.v or a.v == b.u) or (a.u == b.u and a.v == b.v):
+			return False
+		else:
+			return True
+
+	def __ge__( a, b):
+		return a.weight >= b.weight
+
+	def __gt__( a, b):
+		return a.weight > b.weight
+		
+
+
+
+
+
 class Vertex(object):
 	def __init__(self, num):
 		self.num = num
