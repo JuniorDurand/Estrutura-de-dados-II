@@ -279,4 +279,48 @@ class Graph(object):
 		print(string)"""
 
 
+	def SecurityEDGEPrim(self, EDGE):
+		if EDGE.u.cor != "preto" or EDGE.v.cor != "preto":
+			return True
+		else:
+			return False
+
+	def SecurityEDGEsPrim(self, listEDGEs):
+		lista = []
+		for EDGE in listEDGEs:
+			if self.SecurityEDGEPrim(EDGE):
+				lista.append(EDGE)
+		return lista
+
+
+
+
+
+	def Prim(self, u):
+		self.resetGraph()
+		self.MTS = Graph(self.size)
+		u = self.vertex[u]
+		init = u
+		components = []
+		components.append(u)
+		u.cor = "preto"
+		EDGEs = u.getEDGEsObj()
+		while len(EDGEs) > 0:
+			EDGEs = self.SecurityEDGEsPrim(EDGEs)
+			heapq.heapify(EDGEs)
+			EDGE = heapq.heappop(EDGEs)
+			self.MTS.addEDGE(EDGE.u.num, EDGE.v.num, weight= EDGE.weight)
+			if EDGE.u.cor != "preto":
+				components.append(EDGE.u)
+				EDGE.u.cor = "preto"
+			if EDGE.v.cor != "preto":
+				EDGE.v.cor = "preto"
+				components.append(EDGE.v)
+
+			EDGEs = []
+			for x in components:
+				EDGEs.extend(x.getEDGEsObj())
+
+			EDGEs = self.SecurityEDGEsPrim(EDGEs)
+
 
